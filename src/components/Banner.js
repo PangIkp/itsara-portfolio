@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import profile from "../assets/img/profile1.png";
+import profile from "../assets/img/profile2.png";
 import { ArrowRightCircle } from 'react-bootstrap-icons';
 import { Nav } from "react-bootstrap";
 import 'animate.css';
