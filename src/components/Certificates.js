@@ -10,9 +10,9 @@ import certImg7 from "../assets/img/certfirst.jpg";
 import certImg8 from "../assets/img/certrapid.jpg";
 import certImg9 from "../assets/img/certux.jpg";
 import certImg10 from "../assets/img/certservice.jpg";
-import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
+import '../Certificatecard.css'
 
 export const Certificates = () => {
 
@@ -77,49 +77,28 @@ export const Certificates = () => {
             <TrackVisibility>
               {({ isVisible }) =>
               <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
-                <h2 style={{marginBottom: "20px"}}>Certificates</h2>
+                <h2 style={{ marginBottom: "20px" }}>Certificates</h2>
                 <p>The certificates you see in this section are a testament to my achievements and dedication to learning and skill development. Each certificate I have received has been awarded after rigorous testing and evaluation, with a focus on enhancing the knowledge and skills essential in various fields.</p>
-                {/* <Tab.Container id="certificates-tabs" defaultActiveKey="first"> */}
-                  {/* <Nav variant="pills" className="nav-pills mb-5 justify-content-center align-items-center" id="pills-tab">
-                    <Nav.Item>
-                      <Nav.Link eventKey="first">Tab 1</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="second">Tab 2</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="third">Tab 3</Nav.Link>
-                    </Nav.Item>
-                  </Nav> */}
-                  {/* <Tab.Content id="slideInUp" className={isVisible ? "animate__animated animate__slideInUp" : ""}> */}
-                    {/* <Tab.Pane eventKey="first"> */}
-                      <Row>
-                        {
-                          certificates.map((certificate, index) => {
-                            return (
-                              <CertificateCard
-                                key={index}
-                                {...certificate}
-                                />
-                            )
-                          })
-                        }
-                      </Row>
-                    {/* </Tab.Pane> */}
-                    {/* <Tab.Pane eventKey="section">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="third">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane> */}
-                  {/* </Tab.Content> */}
-                {/* </Tab.Container> */}
+                <Row className="certificate-container">
+                  {
+                    certificates.map((certificate, index) => {
+                      return (
+                        <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                          <CertificateCard
+                            title={certificate.title}
+                            description={certificate.description}
+                            imgUrl={certificate.imgUrl}
+                          />
+                        </Col>
+                      )
+                    })
+                  }
+                </Row>
               </div>}
             </TrackVisibility>
           </Col>
         </Row>
       </Container>
-      {/* <img className="background-image-right" src={colorSharp2}></img> */}
     </section>
-  )
-}
+  );
+};

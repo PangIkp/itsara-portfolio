@@ -69,7 +69,7 @@ export const Projects = () => {
                   </Nav> */}
                   {/* <Tab.Content id="slideInUp" className={isVisible ? "animate__animated animate__slideInUp" : ""}> */}
                     {/* <Tab.Pane eventKey="first"> */}
-                      <Row>
+                      <Row className="project-container">
                         {
                           projects.map((project, index) => {
                             return (

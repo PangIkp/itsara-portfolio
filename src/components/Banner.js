@@ -67,7 +67,7 @@ export const Banner = () => {
               </div>}
             </TrackVisibility>
           </Col>
-          <Col xs={10} md={7} xl={5}>
+          <Col xs={10} md={7} xl={5} className="profile-session">
             <TrackVisibility>
               {({ isVisible }) =>
                 <div className={isVisible ? "animate__animated animate__zoomIn" : ""}>

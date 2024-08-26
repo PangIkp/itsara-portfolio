@@ -1,0 +1,18 @@
+.certificate-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .certificate-container {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 120px;
+  }
+  
+  .certificate-card {
+    margin-bottom: 20px;
+    padding: 100px;
+  }

@@ -717,6 +717,60 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   margin-bottom: 24px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
+@media (max-width: 991.98px) { 
+  .cert-imgbx {
+    width: 340px !important;
+    height: 240px !important;
+  }
+  .proj-imgbx {
+    width: 200px  !important;
+    height: 165px !important;
+  }
+ }
+
+ @media (max-width: 1399.98px) {
+  .cert-imgbx {
+    width: 230px;
+    height: 160px;
+  }
+  .proj-imgbx {
+    width: 200px;
+    height: 210px;
+  }
+ }
+
+ @media (max-width: 1399.98px) {
+  .proj-imgbx {
+    width: 280px;
+    height: 195px;
+  }
+  .profile-session {
+    width: 40% !important;
+  }
+ }
+
+ @media (max-width: 575.98px) {
+  .cert-imgbx {
+    /* width: 230px !important;
+    height: 160px !important; */
+    width: 300px !important;
+    height: 200px !important;
+  }
+  .proj-imgbx {
+    /* width: 120px !important; */
+    /* height: 210px !important; */
+    width: 300px !important;
+    height: 240px !important;
+  }
+  .project-container {
+    text-align: -webkit-center;
+  }
+  .certificate-container {
+    text-align: -webkit-center;
+  }
+ }
+
+
 /* .cert-imgbx::before {
   content: "";
   background: linear-gradient(90.21deg, #B03060 -5.91%, #FFB6C1 111.58%);

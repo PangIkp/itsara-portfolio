@@ -41,7 +41,7 @@ export const Skills = () => {
             <div className="skill-bx wow zoomIn">
               <h2>Skills</h2>
               <div className="col-12" style={{display: "flex", justifyContent: "center", alignContent: "",}}>
-                <div style={{display: "flex", marginBottom: "20px", marginTop: "10px", columnGap: "10px"}}>
+                <div style={{display: "flex", marginBottom: "20px", marginTop: "10px", columnGap: "10px", flexWrap: "wrap", justifyContent: "center"}}>
            
                     <img
                       src={require("../assets/img/python.png")}
