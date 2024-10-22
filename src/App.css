@@ -438,6 +438,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   width: 100%;
   height: 0;
   transition: 0.4s ease-in-out;
+  left: 0;
 }
 .proj-imgbx:hover::before {
   height: 100%;
@@ -818,4 +819,135 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   width: 35%;
   right: 0;
   z-index: -4;
+}
+
+/* ActivityCard.css */
+
+.activity {
+  padding: 80px 0;
+  position: relative;
+  background-color: white;
+}
+
+.activity h2 {
+	font-size: 45px;
+	font-weight: 700;
+  text-align: center;
+}
+.activity p {
+  color: #DB7093;
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  line-height: 1.5em;
+  margin: 14px auto 30px auto;
+  text-align: center;
+  width: 56%;
+}
+
+.activity span {
+  color: white;
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  line-height: 1em;
+  margin: 14px auto 30px auto;
+  text-align: center;
+  width: 56%;
+}
+
+.activity h4 {
+  color: white;
+  font-weight: 700;
+  font-size: 25px;
+  letter-spacing: 0.8px;
+  line-height: 1.5em;
+  margin: 40px auto 20px auto;
+  text-align: center;
+  width: 56%;
+}
+
+.act-imgbx {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 70px;
+}
+
+.act-imgbx img {
+  width: 100%;
+}
+
+.act-txtx {
+  position: absolute;
+  text-align: center;
+  top: 50%; /* ปรับตำแหน่งให้เป็นกึ่งกลาง */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.4s ease-in-out;
+  opacity: 0; /* เริ่มต้นให้ซ่อน */
+  width: 100%;
+  padding: 100px; /* เพิ่ม padding ซ้ายและขวา */
+}
+
+
+.act-imgbx::before {
+  content: "";
+  background: linear-gradient(90.21deg, #B03060 -5.91%, #FFB6C1 111.58%);
+  opacity: 0.85;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  transition: height 0.4s ease-in-out;
+  left: 0;
+  border-radius: 15px;
+}
+
+.act-imgbx:hover::before {
+  height: 100%; /* ขยายกราฟฟิกเมื่อ hover */
+}
+
+.act-imgbx:hover .act-txtx {
+  opacity: 1; /* แสดงข้อความเมื่อ hover */
+  color: white;
+}
+
+/* Media Queries สำหรับปรับขนาดตัวอักษร */
+@media (max-width: 768px) {
+  .activity h2 {
+    font-size: 36px; /* ขนาดตัวอักษรที่เล็กลง */
+  }
+  
+  .activity p,
+  .activity span {
+    font-size: 10px; /* ขนาดตัวอักษรที่เล็กลง */
+
+  }
+
+  .activity h4 {
+    font-size: 12px; /* ขนาดตัวอักษรที่เล็กลง */
+
+  }
+  
+  .act-txtx h4 {
+    font-size: 18px; /* ขนาดตัวอักษรที่เล็กลง */
+  }
+}
+
+.act-imgbx::before {
+  content: "";
+  background: linear-gradient(90.21deg, #B03060 -5.91%, #FFB6C1 111.58%);
+  opacity: 0.85;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  transition: height 0.4s ease-in-out;
+  left: 0;
+  border-radius: 15px;
+}
+
+.act-imgbx:hover::before {
+  height: 100%; /* ขยายกราฟฟิกเมื่อ hover */
+}
+
+.act-imgbx:hover .act-txtx {
+  opacity: 1; /* แสดงข้อความเมื่อ hover */
+  color: white;
 }
