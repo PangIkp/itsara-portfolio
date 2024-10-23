@@ -17,31 +17,37 @@ export const Projects = () => {
       title: "Mobile Application",
       description: "develop an application for ordering manga books with Net MAUI.",
       imgUrl: projImg1,
+      tools: "C#, XAML"
     },
     {
       title: "Online Whiteboard",
       description: "serve as a project manager and front - end developer for an online whiteboard project.",
       imgUrl: projImg2,
+      tools: "TypeScript, Tailwind CSS, Next.js"
     },
     {
       title: "Mobile Application",
       description: "developer a food delivery application for milk tea shops.",
       imgUrl: projImg3,
+      tools: "JavaScript, Figma"
     },
     {
       title: "Web Application",
       description: "develop a 2D homemade cake web application to assess user satisfaction.",
       imgUrl: projImg4,
+      tools: "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js"
     },
     {
       title: "Web Application",
       description: "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
       imgUrl: projImg5,
+      tools: "Figma, Microsoft word"
     },
     {
       title: "Data Analysis",
       description: "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
       imgUrl: projImg6,
+      tools: "Power BI, Tableau, Excel"
     },
   ];
 

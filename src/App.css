@@ -359,6 +359,15 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 	font-weight: 700;
   text-align: center;
 }
+
+.project h3 {
+	font-size: 15px;
+	font-weight: 600;
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}
+
 .project p {
   color: #DB7093;
   font-size: 18px;
@@ -452,6 +461,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   transition: 0.5s ease-in-out;
   opacity: 0;
   width: 100%;
+  padding: 30px;
 }
 .proj-imgbx:hover .proj-txtx {
   top: 50%;
@@ -851,7 +861,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   line-height: 1em;
   margin: 14px auto 30px auto;
   text-align: center;
-  width: 56%;
 }
 
 .activity h4 {
@@ -883,8 +892,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   transform: translate(-50%, -50%);
   transition: opacity 0.4s ease-in-out;
   opacity: 0; /* เริ่มต้นให้ซ่อน */
-  width: 100%;
-  padding: 100px; /* เพิ่ม padding ซ้ายและขวา */
 }
 
 
@@ -907,47 +914,55 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .act-imgbx:hover .act-txtx {
   opacity: 1; /* แสดงข้อความเมื่อ hover */
   color: white;
+  width: 950px;
+
 }
 
 /* Media Queries สำหรับปรับขนาดตัวอักษร */
 @media (max-width: 768px) {
-  .activity h2 {
-    font-size: 36px; /* ขนาดตัวอักษรที่เล็กลง */
-  }
-  
-  .activity p,
-  .activity span {
-    font-size: 10px; /* ขนาดตัวอักษรที่เล็กลง */
-
-  }
-
   .activity h4 {
     font-size: 12px; /* ขนาดตัวอักษรที่เล็กลง */
 
   }
   
   .act-txtx h4 {
-    font-size: 18px; /* ขนาดตัวอักษรที่เล็กลง */
+    font-size: 10px; /* ขนาดตัวอักษรที่เล็กลง */
+  }
+
+  .act-txtx span {
+    font-size: 8px; /* ขนาดตัวอักษรที่เล็กลง */
+  }
+
+  .act-imgbx::before {
+    content: "";
+    background: linear-gradient(90.21deg, #B03060 -5.91%, #FFB6C1 111.58%);
+    opacity: 0.85;
+    position: absolute;
+    width: 100%;
+    height: 0;
+    transition: height 0.4s ease-in-out;
+    left: 0;
+    border-radius: 10px;
+  }
+  
+  .act-imgbx:hover::before {
+    height: 100%; /* ขยายกราฟฟิกเมื่อ hover */
+  }
+  
+  .act-imgbx:hover .act-txtx {
+    opacity: 1; /* แสดงข้อความเมื่อ hover */
+    color: white;
+    width: 400px;
+  }
+  
+  .act-txtx {
+    position: absolute;
+    text-align: center;
+    font-size: 8px;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s ease-in-out;
+    opacity: 0; /* เริ่มต้นให้ซ่อน */
+    width: 100%;
   }
 }
 
-.act-imgbx::before {
-  content: "";
-  background: linear-gradient(90.21deg, #B03060 -5.91%, #FFB6C1 111.58%);
-  opacity: 0.85;
-  position: absolute;
-  width: 100%;
-  height: 0;
-  transition: height 0.4s ease-in-out;
-  left: 0;
-  border-radius: 15px;
-}
-
-.act-imgbx:hover::before {
-  height: 100%; /* ขยายกราฟฟิกเมื่อ hover */
-}
-
-.act-imgbx:hover .act-txtx {
-  opacity: 1; /* แสดงข้อความเมื่อ hover */
-  color: white;
-}
