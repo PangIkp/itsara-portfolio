@@ -878,6 +878,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   position: relative;
   overflow: hidden;
   margin-bottom: 70px;
+  border-radius: 15px;
 }
 
 .act-imgbx img {

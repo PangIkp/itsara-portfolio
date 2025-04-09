@@ -6,6 +6,7 @@ import projImg3 from "../assets/img/mackicha.png";
 import projImg4 from "../assets/img/web.png";
 import projImg5 from "../assets/img/laferly.png";
 import projImg6 from "../assets/img/adventure.png";
+import projImg7 from "../assets/img/nongtoy.jpg";
 import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
@@ -33,10 +34,11 @@ export const Projects = () => {
     },
     {
       title: "Web Application",
-      description: "develop a 2D homemade cake web application to assess user satisfaction.",
+      description: "Develop a 2D homemade cake web application to assess user satisfaction.",
       imgUrl: projImg4,
-      tools: "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js"
-    },
+      tools: "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
+      link: "https://style-your-cake-git-dev-itsaras-projects.vercel.app/"
+  },  
     {
       title: "Web Application",
       description: "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
@@ -48,6 +50,14 @@ export const Projects = () => {
       description: "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
       imgUrl: projImg6,
       tools: "Power BI, Tableau, Excel"
+    },
+
+    {
+      title: "AI Web Application",
+      description: "Intern at Nilecon developed a web application where users can create arttoy models with pollination ai.",
+      imgUrl: projImg7,
+      tools: "JavaScript, TypeScript, Tailwind CSS, Next.js, MongoDB, React.js",
+      link: "https://nongtoy.vercel.app"
     },
   ];
 
