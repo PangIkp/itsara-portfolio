@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from '../assets/img/itsara.png';
 import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/nav-icon2.svg';
-import navIcon3 from '../assets/img/nav-icon3.svg';
+import navIcon4 from '../assets/img/nav-icon4.png';
 import { HashLink } from 'react-router-hash-link';
 import {
   BrowserRouter as Router
@@ -55,8 +54,8 @@ export const NavBar = () => {
             <span className="navbar-text">
               <div className="social-icon">
                 {/* <a href="#"><img src={navIcon1} alt="" /></a> */}
-                <a href="https://www.facebook.com/panggylovely/?locale=th_TH" target="_blank"><img src={navIcon2} alt="" /></a>
-                <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2Fitsara_ikp%3Figsh%3DeWV1bXRtd2NvZm8w%26utm_source%3Dqr%26fbclid%3DIwZXh0bgNhZW0CMTAAAR2kW6dUWHmg2lWubflcDtUHdb4w-5PKBGlhra2WAewh8DXIQOTUVFUA5Wc_aem_gLJbY7T2LdOUWu_0oXdVgw&h=AT3igexX-HgVRG_Jbui3jQiOuKCRRfI_kyXwb_uFAkix36YffkcxvOz1fms2uqiBNh-k8TaCTaSgwxQJ3cbDa_7tepladgG4eodse_8zQkSE7EZPIDbW6IQEgqNeLq5Ji7OGr8fio24" target="_blank"><img src={navIcon3} alt="" /></a>
+                <a href="https://www.linkedin.com/in/itsara-klongklaew-20880635b/" target="_blank"><img src={navIcon1} alt="linkin"/></a>
+                <a href="https://github.com/PangIkp" target="_blank"><img src={navIcon4} alt="github"/></a>
               </div>
               <HashLink to='#connect'>
                 <button className="vvd"><span>Let’s Connect</span></button>
