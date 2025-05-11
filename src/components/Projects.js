@@ -37,7 +37,7 @@ export const Projects = () => {
       description: "Develop a 2D homemade cake web application to assess user satisfaction.",
       imgUrl: projImg4,
       tools: "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
-      link: "https://style-your-cake-git-dev-itsaras-projects.vercel.app/"
+      link: "https://style-your-cake-v1.vercel.app/"
   },  
     {
       title: "Web Application",
