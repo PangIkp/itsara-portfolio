@@ -1,65 +1,48 @@
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Tab} from "react-bootstrap";
 import { ProjectCard } from "./ProjectCard";
-import projImg1 from "../assets/img/animezone.png";
-import projImg2 from "../assets/img/inkinspire.png";
-import projImg3 from "../assets/img/mackicha.png";
-import projImg4 from "../assets/img/web.png";
-import projImg5 from "../assets/img/laferly.png";
-import projImg6 from "../assets/img/adventure.png";
-import projImg7 from "../assets/img/nongtoy.jpg";
 import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
+import { fetchContentCollection } from "../utils/contentApi";
 
 export const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const projects = [
-    {
-      title: "Mobile Application",
-      description: "develop an application for ordering manga books with Net MAUI.",
-      imgUrl: projImg1,
-      tools: "C#, XAML"
-    },
-    {
-      title: "Online Whiteboard",
-      description: "serve as a project manager and front - end developer for an online whiteboard project.",
-      imgUrl: projImg2,
-      tools: "TypeScript, Tailwind CSS, Next.js"
-    },
-    {
-      title: "Mobile Application",
-      description: "developer a food delivery application for milk tea shops.",
-      imgUrl: projImg3,
-      tools: "JavaScript, Figma"
-    },
-    {
-      title: "Web Application",
-      description: "Develop a 2D homemade cake web application to assess user satisfaction.",
-      imgUrl: projImg4,
-      tools: "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
-      link: "https://style-your-cake-v1.vercel.app/"
-  },  
-    {
-      title: "Web Application",
-      description: "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
-      imgUrl: projImg5,
-      tools: "Figma, Microsoft word"
-    },
-    {
-      title: "Data Analysis",
-      description: "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
-      imgUrl: projImg6,
-      tools: "Power BI, Tableau, Excel"
-    },
+  useEffect(() => {
+    let isMounted = true;
 
-    {
-      title: "AI Web Application",
-      description: "Intern at Nilecon developed a web application where users can create arttoy models with pollination ai.",
-      imgUrl: projImg7,
-      tools: "JavaScript, TypeScript, Tailwind CSS, Next.js, MongoDB, React.js",
-      link: "https://nongtoy.vercel.app"
-    },
-  ];
+    async function loadProjects() {
+      try {
+        const response = await fetchContentCollection("projects");
+
+        if (!isMounted) {
+          return;
+        }
+
+        setProjects(response);
+        setErrorMessage("");
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setErrorMessage("Unable to load projects right now.");
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadProjects();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section className="project" id="projects">
@@ -72,46 +55,32 @@ export const Projects = () => {
                 <h2 style={{marginBottom: "20px"}}>Projects</h2>
                 <p>These are all the projects I worked on during studies and internships. These projects not only enhanced my technical skills but also gave me a deeper understanding of teamwork, planning, time management, and communication with team members and users. I am confident that these experiences will be immensely beneficial for my future career. <br></br>** Please hover at my project to see details. **</p>
                 <Tab.Container id="projects-tabs" defaultActiveKey="first">
-                  {/* <Nav variant="pills" className="nav-pills mb-5 justify-content-center align-items-center" id="pills-tab">
-                    <Nav.Item>
-                      <Nav.Link eventKey="first">Tab 1</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="second">Tab 2</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="third">Tab 3</Nav.Link>
-                    </Nav.Item>
-                  </Nav> */}
-                  {/* <Tab.Content id="slideInUp" className={isVisible ? "animate__animated animate__slideInUp" : ""}> */}
-                    {/* <Tab.Pane eventKey="first"> */}
-                      <Row className="project-container">
-                        {
-                          projects.map((project, index) => {
-                            return (
-                              <ProjectCard
-                                key={index}
-                                {...project}
-                                />
-                            )
-                          })
-                        }
-                      </Row>
-                    {/* </Tab.Pane> */}
-                    {/* <Tab.Pane eventKey="section">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="third">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quam, quod neque provident velit, rem explicabo excepturi id illo molestiae blanditiis, eligendi dicta officiis asperiores delectus quasi inventore debitis quo.</p>
-                    </Tab.Pane> */}
-                  {/* </Tab.Content> */}
+                  <Row className="project-container">
+                    {isLoading && <p>Loading projects...</p>}
+                    {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
+                    {!isLoading && !errorMessage && projects.length === 0 && (
+                      <p>No projects added yet.</p>
+                    )}
+                    {!isLoading && !errorMessage && projects.map((project) => {
+                      return (
+                        <ProjectCard
+                          key={project.id}
+                          title={project.title}
+                          description={project.description}
+                          imgUrl={project.imageUrl}
+                          tools={project.tools}
+                          link={project.link}
+                        />
+                      )
+                    })}
+                  </Row>
                 </Tab.Container>
               </div>}
             </TrackVisibility>
           </Col>
         </Row>
       </Container>
-      <img className="background-image-right" src={colorSharp2}></img>
+      <img className="background-image-right" src={colorSharp2} alt="Background decoration"></img>
     </section>
   )
 }
