@@ -1,5 +1,176 @@
 {
-  "projects": [],
-  "certificates": [],
-  "activities": []
+  "projects": [
+    {
+      "id": "project-001",
+      "title": "Mobile Application",
+      "description": "develop an application for ordering manga books with Net MAUI.",
+      "tools": "C#, XAML",
+      "link": "",
+      "imageUrl": "/images/projects/animezone.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-002",
+      "title": "Online Whiteboard",
+      "description": "serve as a project manager and front - end developer for an online whiteboard project.",
+      "tools": "TypeScript, Tailwind CSS, Next.js",
+      "link": "",
+      "imageUrl": "/images/projects/inkinspire.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-003",
+      "title": "Mobile Application",
+      "description": "developer a food delivery application for milk tea shops.",
+      "tools": "JavaScript, Figma",
+      "link": "",
+      "imageUrl": "/images/projects/mackicha.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-004",
+      "title": "Web Application",
+      "description": "Develop a 2D homemade cake web application to assess user satisfaction.",
+      "tools": "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
+      "link": "https://style-your-cake-v1.vercel.app/",
+      "imageUrl": "/images/projects/web.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-005",
+      "title": "Web Application",
+      "description": "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
+      "tools": "Figma, Microsoft word",
+      "link": "",
+      "imageUrl": "/images/projects/laferly.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-006",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "tools": "Power BI, Tableau, Excel",
+      "link": "",
+      "imageUrl": "/images/projects/adventure.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-007",
+      "title": "AI Web Application",
+      "description": "Intern at Nilecon developed a web application where users can create arttoy models with pollination ai.",
+      "tools": "JavaScript, TypeScript, Tailwind CSS, Next.js, MongoDB, React.js",
+      "link": "https://nongtoy.vercel.app",
+      "imageUrl": "/images/projects/nongtoy.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "certificate-001",
+      "title": "Mobile Application",
+      "description": "develop an application for ordering manga books with Net MAUI.",
+      "imageUrl": "/images/certificates/chimnovate.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-002",
+      "title": "Online Whiteboard",
+      "description": "serve as a project manager and front - end developer for an online whiteboard project.",
+      "imageUrl": "/images/certificates/bapwa.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-003",
+      "title": "Mobile Application",
+      "description": "developer a food delivery application for milk tea shops.",
+      "imageUrl": "/images/certificates/business.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-004",
+      "title": "Web Application",
+      "description": "develop a 2D homemade cake web application to assess user satisfaction.",
+      "imageUrl": "/images/certificates/cloud.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-005",
+      "title": "Web Application",
+      "description": "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
+      "imageUrl": "/images/certificates/certipython.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-006",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "imageUrl": "/images/certificates/certpython-and-mat.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-007",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "imageUrl": "/images/certificates/certfirst.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-008",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "imageUrl": "/images/certificates/certrapid.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-009",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "imageUrl": "/images/certificates/certux.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "certificate-010",
+      "title": "Data Analysis",
+      "description": "Interned at R&DBI as a Data Analyst and created Adventure work dashboards for presentations to clients.",
+      "imageUrl": "/images/certificates/certservice.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    }
+  ],
+  "activities": [
+    {
+      "id": "activity-001",
+      "title": "Code; Without Barriers Meetup Bangkok",
+      "description": "This event was organized by Microsoft (Thailand) in collaboration with the Thai Programmer Association. It provided an opportunity for women in the technology field to meet and share experiences with speakers from Microsoft, LSEG, Coraline, and Women Techmakers Bangkok.",
+      "imageUrl": "/images/activities/ms.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "activity-002",
+      "title": "Macro Business Simulation Competition",
+      "description": "Participated in the MBS (Macro Business Simulation) competition, which is a cloud-based platform that simulates a business environment and generates financial reports every quarter. This provided an opportunity to learn about management and business simulation.",
+      "imageUrl": "/images/activities/busi.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "activity-003",
+      "title": "Code in The Wind #2",
+      "description": "Participated in a Tailwind CSS skill competition, aimed at allowing frontend developers to showcase their skills and practice using new tools together while learning valuable techniques from experts.",
+      "imageUrl": "/images/activities/twcss.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "activity-004",
+      "title": "Chimnovate Hackathon 2022",
+      "description": "Participated in the Chimnovate Hackathon 2022, with the challenge: Revitalizing Thailand's Gastrodiplomacy through Building & Scaling Virtual Restaurants in the USA, or Creating a Thai restaurant brand to grow exponentially with technology, while promoting the country's brand and soft power through Thai cuisine.",
+      "imageUrl": "/images/activities/hackathon.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "activity-005",
+      "title": "3rd Place – BU Mini Hackathon 2025",
+      "description": "I led the development of the Style Your Cake web application, which secured 3rd place in the competition. Additionally, I participated in a workshop that provided valuable insights into business, further enhancing my skills in both technical and business domains. It was a great learning experience and an excellent opportunity for growth.",
+      "imageUrl": "/images/activities/buminihack.JPG",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    }
+  ]
 }

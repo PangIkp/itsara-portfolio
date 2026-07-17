@@ -48,14 +48,14 @@ export const NavBar = () => {
               <Nav.Link href="#projects" className={activeLink === 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Projects</Nav.Link>
               <Nav.Link href="#certificates" className={activeLink === 'certificates' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('certificates')}>Certificates</Nav.Link>
               <Nav.Link href="#activities" className={activeLink === 'activities' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('activities')}>Activities</Nav.Link>
-
+              <Nav.Link href="#manage" className={activeLink === 'manage' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('manage')}>Manage</Nav.Link>
 
             </Nav>
             <span className="navbar-text">
               <div className="social-icon">
                 {/* <a href="#"><img src={navIcon1} alt="" /></a> */}
-                <a href="https://www.linkedin.com/in/itsara-klongklaew-20880635b/" target="_blank"><img src={navIcon1} alt="linkin"/></a>
-                <a href="https://github.com/PangIkp" target="_blank"><img src={navIcon4} alt="github"/></a>
+                <a href="https://www.linkedin.com/in/itsara-klongklaew-20880635b/" target="_blank" rel="noreferrer"><img src={navIcon1} alt="linkin"/></a>
+                <a href="https://github.com/PangIkp" target="_blank" rel="noreferrer"><img src={navIcon4} alt="github"/></a>
               </div>
               <HashLink to='#connect'>
                 <button className="vvd"><span>Let’s Connect</span></button>

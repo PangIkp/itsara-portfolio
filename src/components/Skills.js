@@ -1,4 +1,3 @@
-import { Container, Row, Col } from "react-bootstrap";
 import meter1 from "../assets/img/developer.png";
 import meter2 from "../assets/img/uxui.png";
 import meter3 from "../assets/img/data.png";
@@ -8,8 +7,6 @@ import meter6 from "../assets/img/management.png";
 import meter7 from "../assets/img/team.png";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import arrow1 from "../assets/img/arrow1.svg";
-import arrow2 from "../assets/img/arrow2.svg";
 import colorSharp from "../assets/img/color-sharp.png";
 
 export const Skills = () => {
@@ -150,7 +147,7 @@ export const Skills = () => {
           </div>
         </div>
       </div>
-      <img className="background-image-left" src={colorSharp} alt="Image" />
+      <img className="background-image-left" src={colorSharp} alt="Background decoration" />
     </section>
   );
 };

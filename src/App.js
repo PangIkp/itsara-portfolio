@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavBar } from "./components/NavBar";
@@ -9,6 +8,7 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { Certificates } from './components/Certificates';
 import { Activities } from './components/Activities';
+import { ContentManager } from "./components/ContentManager";
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
       <Projects/>
       <Certificates/>
       <Activities/>
+      <ContentManager/>
       <Contact/>
       <Footer/>
     </div>

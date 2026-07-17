@@ -16,8 +16,7 @@ export const Contact = () => {
     message: "",
   };
   const [formDetails, setFormDetails] = useState(formInitialDetails);
-  const [buttonText, setButtonText] = useState("Send");
-  const [status, setStatus] = useState({});
+  const buttonText = "Send";
 
   const onFormUpdate = (category, value) => {
     setFormDetails({
@@ -78,7 +77,7 @@ export const Contact = () => {
                       <Col size={12} sm={6} className="px-1">
                         <input
                           type="text"
-                          value={formDetails.lasttName}
+                          value={formDetails.lastName}
                           name="last_name"
                           placeholder="Last Name"
                           onChange={(e) =>
@@ -133,17 +132,6 @@ export const Contact = () => {
                           <span>{buttonText}</span>
                         </button>
                       </Col>
-                      {status.message && (
-                        <Col>
-                          <p
-                            className={
-                              status.success === false ? "danger" : "success"
-                            }
-                          >
-                            {status.message}
-                          </p>
-                        </Col>
-                      )}
                     </Row>
                   </form>
                 </div>
