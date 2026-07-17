@@ -4,6 +4,7 @@ const contentRoutes = require("./routes/contentRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const certificateRoutes = require("./routes/certificateRoutes");
 const activityRoutes = require("./routes/activityRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
 const port = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", contentRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/activities", activityRoutes);

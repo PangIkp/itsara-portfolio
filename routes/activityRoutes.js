@@ -4,6 +4,7 @@ const {
   writeContent,
   generateReadableId,
 } = require("../utils/contentStore");
+const { requireAdminAuth } = require("../utils/adminAuth");
 const { findItemIndexById } = require("../utils/contentHelpers");
 const { validateActivityPayload } = require("../utils/contentValidators");
 
@@ -21,7 +22,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", requireAdminAuth, async (req, res) => {
   try {
     const validation = validateActivityPayload(req.body);
 
@@ -52,7 +53,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireAdminAuth, async (req, res) => {
   try {
     const validation = validateActivityPayload(req.body);
 
@@ -91,7 +92,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireAdminAuth, async (req, res) => {
   try {
     const content = await readContent();
     const activityIndex = findItemIndexById(content.activities, req.params.id);

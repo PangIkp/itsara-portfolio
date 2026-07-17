@@ -3,7 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { CertificateCard } from "./CertificateCard";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
-import '../Certificatecard.css'
 import { fetchContentCollection } from "../utils/contentApi";
 
 export const Certificates = () => {
@@ -52,8 +51,8 @@ export const Certificates = () => {
             <TrackVisibility>
               {({ isVisible }) =>
               <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
-                <h2 style={{ marginBottom: "20px" }}>Certificates</h2>
-                <p>The certificates you see in this section are a testament to my achievements and dedication to learning and skill development. Each certificate I have received has been awarded after rigorous testing and evaluation, with a focus on enhancing the knowledge and skills essential in various fields.</p>
+                <h2 className="section-heading">Certificates</h2>
+                <p className="section-lead">The certificates you see in this section are a testament to my achievements and dedication to learning and skill development. Each certificate I have received has been awarded after rigorous testing and evaluation, with a focus on enhancing the knowledge and skills essential in various fields.</p>
                 {isLoading && <p>Loading certificates...</p>}
                 {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
                 {!isLoading && !errorMessage && certificates.length === 0 && (
@@ -63,7 +62,7 @@ export const Certificates = () => {
                   {
                     !isLoading && !errorMessage && certificates.map((certificate) => {
                       return (
-                        <Col key={certificate.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+                        <Col key={certificate.id} xs={12} sm={6} lg={4} className="card-grid-item">
                           <CertificateCard
                             title={certificate.title}
                             description={certificate.description}

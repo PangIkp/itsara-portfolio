@@ -52,8 +52,8 @@ export const Projects = () => {
             <TrackVisibility>
               {({ isVisible }) =>
               <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
-                <h2 style={{marginBottom: "20px"}}>Projects</h2>
-                <p>These are all the projects I worked on during studies and internships. These projects not only enhanced my technical skills but also gave me a deeper understanding of teamwork, planning, time management, and communication with team members and users. I am confident that these experiences will be immensely beneficial for my future career. <br></br>** Please hover at my project to see details. **</p>
+                <h2 className="section-heading">Projects</h2>
+                <p className="section-lead">These are all the projects I worked on during studies and internships. These projects not only enhanced my technical skills but also gave me a deeper understanding of teamwork, planning, time management, and communication with team members and users. I am confident that these experiences will be immensely beneficial for my future career. <br></br>** Please hover at my project to see details. **</p>
                 <Tab.Container id="projects-tabs" defaultActiveKey="first">
                   <Row className="project-container">
                     {isLoading && <p>Loading projects...</p>}

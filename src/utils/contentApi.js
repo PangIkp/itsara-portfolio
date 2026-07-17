@@ -1,4 +1,21 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const ADMIN_TOKEN_KEY = "portfolio_admin_token";
+
+function getAdminToken() {
+  return window.localStorage.getItem(ADMIN_TOKEN_KEY) || "";
+}
+
+function buildAuthHeaders() {
+  const token = getAdminToken();
+
+  if (!token) {
+    return {};
+  }
+
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
 
 export async function fetchContentCollection(collection) {
   const response = await fetch(`${API_BASE_URL}/api/${collection}`);
@@ -25,6 +42,7 @@ export async function createContentItem(collection, payload) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(payload),
   });
@@ -37,6 +55,7 @@ export async function updateContentItem(collection, id, payload) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      ...buildAuthHeaders(),
     },
     body: JSON.stringify(payload),
   });
@@ -47,7 +66,57 @@ export async function updateContentItem(collection, id, payload) {
 export async function deleteContentItem(collection, id) {
   const response = await fetch(`${API_BASE_URL}/api/${collection}/${id}`, {
     method: "DELETE",
+    headers: buildAuthHeaders(),
   });
 
   return parseJsonResponse(response);
+}
+
+export async function loginAdmin(username, password) {
+  const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  });
+
+  const data = await parseJsonResponse(response);
+  window.localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+  return data;
+}
+
+export async function logoutAdmin() {
+  const response = await fetch(`${API_BASE_URL}/api/admin/logout`, {
+    method: "POST",
+    headers: buildAuthHeaders(),
+  });
+
+  window.localStorage.removeItem(ADMIN_TOKEN_KEY);
+  return parseJsonResponse(response);
+}
+
+export async function verifyAdminSession() {
+  const token = getAdminToken();
+
+  if (!token) {
+    return false;
+  }
+
+  const response = await fetch(`${API_BASE_URL}/api/admin/session`, {
+    headers: buildAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    window.localStorage.removeItem(ADMIN_TOKEN_KEY);
+    return false;
+  }
+
+  const data = await response.json();
+
+  if (!data.authenticated) {
+    window.localStorage.removeItem(ADMIN_TOKEN_KEY);
+  }
+
+  return Boolean(data.authenticated);
 }

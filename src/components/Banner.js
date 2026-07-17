@@ -5,7 +5,6 @@ import { ArrowRightCircle } from "react-bootstrap-icons";
 import { Nav } from "react-bootstrap";
 import "animate.css";
 import TrackVisibility from "react-on-screen";
-import "tailwindcss/tailwind.css";
 
 const TO_ROTATE = ["Web Developer", "Data Analyst", "UX/UI Designer"];
 

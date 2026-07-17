@@ -36,7 +36,7 @@ export const Skills = () => {
         <div className="row">
           <div className="">
             <div className="skill-bx wow zoomIn">
-              <h2>Skills</h2>
+              <h2 className="section-heading">Skills</h2>
               <div className="col-12" style={{display: "flex", justifyContent: "center", alignContent: "",}}>
                 <div style={{display: "flex", marginBottom: "20px", marginTop: "10px", columnGap: "10px", flexWrap: "wrap", justifyContent: "center"}}>
            
