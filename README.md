@@ -44,6 +44,8 @@ REACT_APP_API_BASE_URL=http://localhost:5000
 ```bash
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
+ADMIN_USERNAME=your-admin-username
+ADMIN_PASSWORD=your-admin-password
 ```
 
 ## ระบบข้อมูลปัจจุบัน
@@ -76,7 +78,13 @@ EMAIL_PASS=your-app-password
 
 ## หน้า Manage
 
-ตอนนี้มี section `Manage` อยู่ในหน้าเว็บแล้ว ใช้สำหรับ:
+ตอนนี้มี section `Manage` อยู่ในหน้าเว็บแล้ว แต่:
+
+- ไม่มี link ใน navbar
+- ต้องเปิดผ่าน `/manage` เอง
+- ต้อง login เป็น admin ก่อน
+
+หลัง login แล้ว ใช้สำหรับ:
 
 - เพิ่มข้อมูลใหม่
 - แก้ไขข้อมูลเดิม

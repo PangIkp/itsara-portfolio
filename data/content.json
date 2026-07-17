@@ -172,5 +172,73 @@
       "imageUrl": "/images/activities/buminihack.JPG",
       "createdAt": "2026-07-17T00:00:00.000Z"
     }
+  ],
+  "skills": [
+    {
+      "id": "skill-001",
+      "name": "Python",
+      "imageUrl": "/images/skills/python.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-002",
+      "name": "Java",
+      "imageUrl": "/images/skills/java.webp",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-003",
+      "name": "C#",
+      "imageUrl": "/images/skills/csharp.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-004",
+      "name": ".NET",
+      "imageUrl": "/images/skills/net.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-005",
+      "name": "HTML",
+      "imageUrl": "/images/skills/html.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-006",
+      "name": "TypeScript",
+      "imageUrl": "/images/skills/type.webp",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-007",
+      "name": "SQL",
+      "imageUrl": "/images/skills/sql.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-008",
+      "name": "Tailwind CSS",
+      "imageUrl": "/images/skills/tailwind.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-009",
+      "name": "React",
+      "imageUrl": "/images/skills/react.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-010",
+      "name": "Figma",
+      "imageUrl": "/images/skills/figma.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "skill-011",
+      "name": "Power BI",
+      "imageUrl": "/images/skills/powerbi.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    }
   ]
 }

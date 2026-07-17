@@ -7,6 +7,7 @@ const defaultContent = {
   projects: [],
   certificates: [],
   activities: [],
+  skills: [],
 };
 
 async function readContent() {
@@ -37,6 +38,7 @@ function generateReadableId(collection, items) {
     projects: "project",
     certificates: "certificate",
     activities: "activity",
+    skills: "skill",
   };
 
   const prefix = prefixMap[collection] || "item";

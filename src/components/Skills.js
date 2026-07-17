@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import meter1 from "../assets/img/developer.png";
 import meter2 from "../assets/img/uxui.png";
 import meter3 from "../assets/img/data.png";
@@ -8,8 +9,27 @@ import meter7 from "../assets/img/team.png";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import colorSharp from "../assets/img/color-sharp.png";
+import { fetchContentCollection } from "../utils/contentApi";
+
+const defaultTechStackIcons = [
+  { id: "skill-001", name: "Python", imageUrl: "/images/skills/python.png", width: 30, height: 30 },
+  { id: "skill-002", name: "Java", imageUrl: "/images/skills/java.webp", width: 35, height: 35 },
+  { id: "skill-003", name: "C#", imageUrl: "/images/skills/csharp.png", width: 30, height: 30 },
+  { id: "skill-004", name: ".NET", imageUrl: "/images/skills/net.png", width: 27, height: 27 },
+  { id: "skill-005", name: "HTML", imageUrl: "/images/skills/html.png", width: 30, height: 30 },
+  { id: "skill-006", name: "TypeScript", imageUrl: "/images/skills/type.webp", width: 27, height: 27 },
+  { id: "skill-007", name: "SQL", imageUrl: "/images/skills/sql.png", width: 30, height: 30 },
+  { id: "skill-008", name: "Tailwind CSS", imageUrl: "/images/skills/tailwind.png", width: 27, height: 27 },
+  { id: "skill-009", name: "React", imageUrl: "/images/skills/react.png", width: 27, height: 27 },
+  { id: "skill-010", name: "Figma", imageUrl: "/images/skills/figma.png", width: 27, height: 27 },
+  { id: "skill-011", name: "Power BI", imageUrl: "/images/skills/powerbi.png", width: 27, height: 27 },
+];
 
 export const Skills = () => {
+  const [skills, setSkills] = useState(defaultTechStackIcons);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -30,6 +50,40 @@ export const Skills = () => {
     },
   };
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadSkills() {
+      try {
+        const response = await fetchContentCollection("skills");
+
+        if (!isMounted) {
+          return;
+        }
+
+        setSkills(response.length > 0 ? response : defaultTechStackIcons);
+        setErrorMessage("");
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setSkills(defaultTechStackIcons);
+        setErrorMessage("");
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadSkills();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section className="skill" id="skills">
       <div className="container">
@@ -37,77 +91,29 @@ export const Skills = () => {
           <div className="">
             <div className="skill-bx wow zoomIn">
               <h2 className="section-heading">Skills</h2>
-              <div className="col-12" style={{display: "flex", justifyContent: "center", alignContent: "",}}>
-                <div style={{display: "flex", marginBottom: "20px", marginTop: "10px", columnGap: "10px", flexWrap: "wrap", justifyContent: "center"}}>
-           
+              <div className="col-12" style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    marginBottom: "20px",
+                    marginTop: "10px",
+                    columnGap: "10px",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                  }}
+                >
+                  {skills.map((icon) => (
                     <img
-                      src={require("../assets/img/python.png")}
-                      alt="Python"
-                      style={{ height: "30px", width: "30px"}}
+                      key={icon.id}
+                      src={icon.imageUrl}
+                      alt={icon.name}
+                      style={{ width: `${icon.width || 27}px`, height: `${icon.height || 27}px` }}
                     />
-                
-                    <img
-                      src={require("../assets/img/java.webp")}
-                      alt="Java"
-                      style={{ height: "35px", width: "35px" }}
-                    />
-                  
-                    <img
-                      src={require("../assets/img/csharp.png")}
-                      alt="C#"
-                      style={{ height: "30px", width: "30px" }}
-                    />
-                 
-                    <img
-                      src={require("../assets/img/net.png")}
-                      alt=".Net"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                 
-                    <img
-                      src={require("../assets/img/html.png")}
-                      alt="Html"
-                      style={{ height: "30px", width: "30px" }}
-                    />
-                 
-                    <img
-                      src={require("../assets/img/type.webp")}
-                      alt="TypeScript"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                 
-                    <img
-                      src={require("../assets/img/sql.png")}
-                      alt="SQL"
-                      style={{ height: "30px", width: "30px" }}
-                    />
-                
-                    <img
-                      src={require("../assets/img/tailwind.png")}
-                      alt="TailwindCSS"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                
-                    <img
-                      src={require("../assets/img/react.png")}
-                      alt="React"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                
-                    <img
-                      src={require("../assets/img/figma.png")}
-                      alt="Figma"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                 
-                    <img
-                      src={require("../assets/img/powerbi.png")}
-                      alt="PowerBi"
-                      style={{ height: "27px", width: "27px" }}
-                    />
-                 
+                  ))}
                 </div>
               </div>
+              {isLoading && <p>Loading skills...</p>}
+              {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
 
               <Carousel
                 responsive={responsive}
@@ -115,11 +121,11 @@ export const Skills = () => {
                 className="owl-carousel owl-theme"
               >
                 <div className="item">
-                  <img src={meter1} alt="web developer"  />
+                  <img src={meter1} alt="web developer" />
                   <h5>Web Development</h5>
                 </div>
                 <div className="item">
-                  <img src={meter2} alt="UX/UI Designe" />
+                  <img src={meter2} alt="UX/UI Designer" />
                   <h5>UX/UI Designer</h5>
                 </div>
                 <div className="item">

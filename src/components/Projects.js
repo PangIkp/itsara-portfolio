@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Tab} from "react-bootstrap";
+import { Container, Row, Col, Tab } from "react-bootstrap";
 import { ProjectCard } from "./ProjectCard";
 import colorSharp2 from "../assets/img/color-sharp2.png";
 import 'animate.css';
@@ -51,11 +51,11 @@ export const Projects = () => {
           <Col size={12}>
             <TrackVisibility>
               {({ isVisible }) =>
-              <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
+              <div>
                 <h2 className="section-heading">Projects</h2>
-                <p className="section-lead">These are all the projects I worked on during studies and internships. These projects not only enhanced my technical skills but also gave me a deeper understanding of teamwork, planning, time management, and communication with team members and users. I am confident that these experiences will be immensely beneficial for my future career. <br></br>** Please hover at my project to see details. **</p>
+                <p className="section-lead">Projects I built during my studies and internships, highlighting both technical skills and real teamwork experience. <br></br>** Please hover at my project to see details. **</p>
                 <Tab.Container id="projects-tabs" defaultActiveKey="first">
-                  <Row className="project-container">
+                  <Row className="project-container content-scroll-grid project-scroll-grid">
                     {isLoading && <p>Loading projects...</p>}
                     {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
                     {!isLoading && !errorMessage && projects.length === 0 && (

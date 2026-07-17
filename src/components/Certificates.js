@@ -50,15 +50,15 @@ export const Certificates = () => {
           <Col size={12}>
             <TrackVisibility>
               {({ isVisible }) =>
-              <div className={isVisible ? "animate__animated animate__fadeIn": ""}>
+              <div>
                 <h2 className="section-heading">Certificates</h2>
-                <p className="section-lead">The certificates you see in this section are a testament to my achievements and dedication to learning and skill development. Each certificate I have received has been awarded after rigorous testing and evaluation, with a focus on enhancing the knowledge and skills essential in various fields.</p>
+                <p className="section-lead">Certificates that reflect my learning progress and continued focus on building practical skills.</p>
                 {isLoading && <p>Loading certificates...</p>}
                 {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
                 {!isLoading && !errorMessage && certificates.length === 0 && (
                   <p>No certificates added yet.</p>
                 )}
-                <Row className="certificate-container">
+                <Row className="certificate-container content-scroll-grid certificate-scroll-grid">
                   {
                     !isLoading && !errorMessage && certificates.map((certificate) => {
                       return (

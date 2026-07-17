@@ -83,8 +83,34 @@ function validateActivityPayload(payload) {
   };
 }
 
+function validateSkillPayload(payload) {
+  const missingFields = validateRequiredTextFields(payload, [
+    "name",
+    "imageUrl",
+  ]);
+
+  if (missingFields.length > 0) {
+    return {
+      isValid: false,
+      message: `Missing required fields: ${missingFields.join(", ")}`,
+    };
+  }
+
+  if (!payload.imageUrl.startsWith("/images/skills/")) {
+    return {
+      isValid: false,
+      message: "imageUrl must start with '/images/skills/' for skill items.",
+    };
+  }
+
+  return {
+    isValid: true,
+  };
+}
+
 module.exports = {
   validateProjectPayload,
   validateCertificatePayload,
   validateActivityPayload,
+  validateSkillPayload,
 };

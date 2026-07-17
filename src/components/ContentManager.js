@@ -40,6 +40,14 @@ const collectionConfig = {
       { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/activities/example.jpg" },
     ],
   },
+  skills: {
+    label: "Tech Stack",
+    emptyMessage: "No tech stack items added yet.",
+    fields: [
+      { name: "name", label: "Name", required: true },
+      { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/skills/example.png" },
+    ],
+  },
 };
 
 function buildInitialFormState(collection) {
@@ -57,6 +65,7 @@ export function ContentManager() {
     projects: [],
     certificates: [],
     activities: [],
+    skills: [],
   });
   const [formValues, setFormValues] = useState(buildInitialFormState("projects"));
   const [editingId, setEditingId] = useState("");
@@ -76,7 +85,8 @@ export function ContentManager() {
   const totalItems =
     itemsByCollection.projects.length +
     itemsByCollection.certificates.length +
-    itemsByCollection.activities.length;
+    itemsByCollection.activities.length +
+    itemsByCollection.skills.length;
   const editorTitle = editingId ? "Update Item" : "Create New Item";
   const editorDescription = editingId
     ? "You are editing an existing item. Save when the content looks correct."
@@ -117,10 +127,11 @@ export function ContentManager() {
 
     async function loadAllCollections() {
       try {
-        const [projects, certificates, activities] = await Promise.all([
+        const [projects, certificates, activities, skills] = await Promise.all([
           fetchContentCollection("projects"),
           fetchContentCollection("certificates"),
           fetchContentCollection("activities"),
+          fetchContentCollection("skills"),
         ]);
 
         if (!isMounted) {
@@ -131,6 +142,7 @@ export function ContentManager() {
           projects,
           certificates,
           activities,
+          skills,
         });
         setErrorMessage("");
       } catch (error) {
@@ -219,6 +231,7 @@ export function ContentManager() {
       projects: [],
       certificates: [],
       activities: [],
+      skills: [],
     });
     resetCurrentForm();
     setStatusMessage("");
@@ -403,6 +416,7 @@ export function ContentManager() {
             <span>{itemsByCollection.projects.length} Projects</span>
             <span>{itemsByCollection.certificates.length} Certificates</span>
             <span>{itemsByCollection.activities.length} Activities</span>
+            <span>{itemsByCollection.skills.length} Skills</span>
           </div>
         </div>
         <div className="manager-status-stack">
@@ -509,7 +523,7 @@ export function ContentManager() {
                       <div className="manager-image-preview">
                         <img
                           src={previewImageUrl}
-                          alt={formValues.title || "Preview"}
+                          alt={formValues.title || formValues.name || "Preview"}
                           onLoad={() => setImagePreviewStatus("ready")}
                           onError={() => setImagePreviewStatus("error")}
                         />
@@ -562,8 +576,8 @@ export function ContentManager() {
                     <div className="manager-item-card" key={item.id}>
                       <div className="manager-item-content">
                         <p className="manager-item-id">{item.id}</p>
-                        <h4>{item.title}</h4>
-                        <p>{item.description}</p>
+                        <h4>{item.title || item.name}</h4>
+                        {item.description && <p>{item.description}</p>}
                         {"tools" in item && item.tools && (
                           <p><strong>Tools:</strong> {item.tools}</p>
                         )}

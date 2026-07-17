@@ -5,7 +5,6 @@ export const ProjectCard = ({ title, description, imgUrl, tools, link }) => {
     <>
       <img src={imgUrl} alt={title} />
       <div className="proj-txtx">
-        <p className="proj-kicker">Project</p>
         <h4>{title}</h4>
         <span>{description}</span>
         {tools && <h3>{tools}</h3>}
@@ -15,9 +14,16 @@ export const ProjectCard = ({ title, description, imgUrl, tools, link }) => {
 
   return (
     <Col size={12} sm={6} lg={4} className="card-grid-item">
-      <div className="proj-imgbx">
+      <div className={`proj-imgbx${link ? " proj-imgbx-linked" : ""}`}>
         {link ? (
-          <a href={link} target="_blank" rel="noopener noreferrer" className="proj-card-link">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="proj-card-link"
+            aria-label={`${title} opens project website in a new tab`}
+          >
+            <span className="proj-link-tooltip">Open project website</span>
             {cardContent}
           </a>
         ) : (

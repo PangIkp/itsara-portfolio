@@ -47,7 +47,7 @@ export const Activities = () => {
         <Row>
           <Col className="text-center">
             <h2 className="section-heading">Activities</h2>
-            <p className="section-lead">The activities presented in this section reflect my continuous engagement and growth in diverse areas of interest. Each activity showcases not only my passion for learning but also my dedication to applying practical skills in real-world scenarios, contributing to both personal and professional development. <br></br>** Please hover at my acivity to see details. **</p>
+            <p className="section-lead">Activities that show my learning journey, teamwork, and hands-on experience beyond the classroom. <br></br>** Please hover at my acivity to see details. **</p>
             {isLoading && <p>Loading activities...</p>}
             {!isLoading && errorMessage && <p className="danger">{errorMessage}</p>}
             {!isLoading && !errorMessage && activities.length === 0 && (
@@ -57,7 +57,7 @@ export const Activities = () => {
         </Row>
         <Row className="activity-container justify-content-center">
           {!isLoading && !errorMessage && activities.map((activity) => (
-            <Col key={activity.id} xs={12} sm={6} lg={4} className="card-grid-item">
+            <Col key={activity.id} xs={12} xl={10} className="card-grid-item activity-grid-item">
               <ActivityCard
                 title={activity.title}
                 description={activity.description}

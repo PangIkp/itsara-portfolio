@@ -67,7 +67,7 @@ export const NavBar = () => {
 
   return (
     <Navbar
-      expand="md"
+      expand="lg"
       expanded={expanded}
       className={`${scrolled ? "scrolled" : ""} ${isManagePage ? "manage-navbar" : ""}`.trim()}
     >
