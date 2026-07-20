@@ -5,7 +5,7 @@ const {
   generateReadableId,
 } = require("../utils/contentStore");
 const { requireAdminAuth } = require("../utils/adminAuth");
-const { findItemIndexById } = require("../utils/contentHelpers");
+const { findItemIndexById, reorderItemsByIds } = require("../utils/contentHelpers");
 const { validateSkillPayload } = require("../utils/contentValidators");
 
 const router = express.Router();
@@ -36,7 +36,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
     const newSkill = {
       id: generateReadableId("skills", content.skills),
       name: req.body.name.trim(),
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
       createdAt: new Date().toISOString(),
     };
 
@@ -75,7 +75,7 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
     const updatedSkill = {
       ...existingSkill,
       name: req.body.name.trim(),
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
     };
 
     content.skills[skillIndex] = updatedSkill;
@@ -85,6 +85,29 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Failed to update skill.",
+      error: error.message,
+    });
+  }
+});
+
+router.post("/reorder", requireAdminAuth, async (req, res) => {
+  try {
+    const content = await readContent();
+    const reorderedSkills = reorderItemsByIds(content.skills, req.body.itemIds);
+
+    if (!reorderedSkills) {
+      return res.status(400).json({
+        message: "itemIds must include every skill id exactly once.",
+      });
+    }
+
+    content.skills = reorderedSkills;
+    await writeContent(content);
+
+    return res.json(content.skills);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to reorder skills.",
       error: error.message,
     });
   }

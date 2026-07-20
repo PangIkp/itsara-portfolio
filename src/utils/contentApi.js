@@ -72,6 +72,19 @@ export async function deleteContentItem(collection, id) {
   return parseJsonResponse(response);
 }
 
+export async function reorderContentItems(collection, itemIds) {
+  const response = await fetch(`${API_BASE_URL}/api/${collection}/reorder`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...buildAuthHeaders(),
+    },
+    body: JSON.stringify({ itemIds }),
+  });
+
+  return parseJsonResponse(response);
+}
+
 export async function loginAdmin(username, password) {
   const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
     method: "POST",

@@ -5,11 +5,46 @@ function validateRequiredTextFields(payload, requiredFields) {
   });
 }
 
+function validateOptionalImagePath(imageUrl, expectedPrefix, collectionLabel) {
+  if (typeof imageUrl !== "string") {
+    return {
+      isValid: false,
+      message: "imageUrl must be a string when provided.",
+    };
+  }
+
+  const trimmedImageUrl = imageUrl.trim();
+
+  if (trimmedImageUrl === "") {
+    return {
+      isValid: true,
+    };
+  }
+
+  const isExternalUrl = /^https?:\/\/\S+/i.test(trimmedImageUrl);
+
+  if (isExternalUrl) {
+    return {
+      isValid: true,
+    };
+  }
+
+  if (!trimmedImageUrl.startsWith(expectedPrefix)) {
+    return {
+      isValid: false,
+      message: `imageUrl must start with '${expectedPrefix}' or be a valid http/https URL for ${collectionLabel} items.`,
+    };
+  }
+
+  return {
+    isValid: true,
+  };
+}
+
 function validateProjectPayload(payload) {
   const missingFields = validateRequiredTextFields(payload, [
     "title",
     "description",
-    "imageUrl",
   ]);
 
   if (missingFields.length > 0) {
@@ -19,23 +54,13 @@ function validateProjectPayload(payload) {
     };
   }
 
-  if (!payload.imageUrl.startsWith("/images/projects/")) {
-    return {
-      isValid: false,
-      message: "imageUrl must start with '/images/projects/' for project items.",
-    };
-  }
-
-  return {
-    isValid: true,
-  };
+  return validateOptionalImagePath(payload.imageUrl, "/images/projects/", "project");
 }
 
 function validateCertificatePayload(payload) {
   const missingFields = validateRequiredTextFields(payload, [
     "title",
     "description",
-    "imageUrl",
   ]);
 
   if (missingFields.length > 0) {
@@ -45,23 +70,13 @@ function validateCertificatePayload(payload) {
     };
   }
 
-  if (!payload.imageUrl.startsWith("/images/certificates/")) {
-    return {
-      isValid: false,
-      message: "imageUrl must start with '/images/certificates/' for certificate items.",
-    };
-  }
-
-  return {
-    isValid: true,
-  };
+  return validateOptionalImagePath(payload.imageUrl, "/images/certificates/", "certificate");
 }
 
 function validateActivityPayload(payload) {
   const missingFields = validateRequiredTextFields(payload, [
     "title",
     "description",
-    "imageUrl",
   ]);
 
   if (missingFields.length > 0) {
@@ -71,22 +86,12 @@ function validateActivityPayload(payload) {
     };
   }
 
-  if (!payload.imageUrl.startsWith("/images/activities/")) {
-    return {
-      isValid: false,
-      message: "imageUrl must start with '/images/activities/' for activity items.",
-    };
-  }
-
-  return {
-    isValid: true,
-  };
+  return validateOptionalImagePath(payload.imageUrl, "/images/activities/", "activity");
 }
 
 function validateSkillPayload(payload) {
   const missingFields = validateRequiredTextFields(payload, [
     "name",
-    "imageUrl",
   ]);
 
   if (missingFields.length > 0) {
@@ -96,16 +101,7 @@ function validateSkillPayload(payload) {
     };
   }
 
-  if (!payload.imageUrl.startsWith("/images/skills/")) {
-    return {
-      isValid: false,
-      message: "imageUrl must start with '/images/skills/' for skill items.",
-    };
-  }
-
-  return {
-    isValid: true,
-  };
+  return validateOptionalImagePath(payload.imageUrl, "/images/skills/", "skill");
 }
 
 module.exports = {

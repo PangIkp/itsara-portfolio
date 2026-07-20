@@ -5,7 +5,7 @@ import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon4 from '../assets/img/nav-icon4.png';
 import { Link, useLocation } from "react-router-dom";
 
-export const NavBar = () => {
+export const NavBar = ({ isAdminAuthenticated = false, onManageLogout }) => {
   const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -96,9 +96,22 @@ export const NavBar = () => {
               <a href="https://github.com/PangIkp" target="_blank" rel="noreferrer"><img src={navIcon4} alt="github"/></a>
             </div>
             {isManagePage ? (
-              <Link to="/" onClick={() => setExpanded(false)}>
-                <button className="vvd"><span>Back Home</span></button>
-              </Link>
+              <>
+                {isAdminAuthenticated && (
+                  <button
+                    className="vvd manage-logout-button"
+                    onClick={async () => {
+                      setExpanded(false);
+                      await onManageLogout?.();
+                    }}
+                  >
+                    <span>Log Out</span>
+                  </button>
+                )}
+                <Link to="/" onClick={() => setExpanded(false)}>
+                  <button className="vvd"><span>Back Home</span></button>
+                </Link>
+              </>
             ) : (
               <a href="#connect">
                 <button className="vvd"><span>Let’s Connect</span></button>

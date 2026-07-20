@@ -5,7 +5,7 @@ const {
   generateReadableId,
 } = require("../utils/contentStore");
 const { requireAdminAuth } = require("../utils/adminAuth");
-const { findItemIndexById } = require("../utils/contentHelpers");
+const { findItemIndexById, reorderItemsByIds } = require("../utils/contentHelpers");
 const { validateCertificatePayload } = require("../utils/contentValidators");
 
 const router = express.Router();
@@ -37,7 +37,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
       id: generateReadableId("certificates", content.certificates),
       title: req.body.title.trim(),
       description: req.body.description.trim(),
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
       createdAt: new Date().toISOString(),
     };
 
@@ -77,7 +77,7 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
       ...existingCertificate,
       title: req.body.title.trim(),
       description: req.body.description.trim(),
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
     };
 
     content.certificates[certificateIndex] = updatedCertificate;
@@ -87,6 +87,32 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Failed to update certificate.",
+      error: error.message,
+    });
+  }
+});
+
+router.post("/reorder", requireAdminAuth, async (req, res) => {
+  try {
+    const content = await readContent();
+    const reorderedCertificates = reorderItemsByIds(
+      content.certificates,
+      req.body.itemIds
+    );
+
+    if (!reorderedCertificates) {
+      return res.status(400).json({
+        message: "itemIds must include every certificate id exactly once.",
+      });
+    }
+
+    content.certificates = reorderedCertificates;
+    await writeContent(content);
+
+    return res.json(content.certificates);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to reorder certificates.",
       error: error.message,
     });
   }

@@ -5,7 +5,7 @@ const {
   generateReadableId,
 } = require("../utils/contentStore");
 const { requireAdminAuth } = require("../utils/adminAuth");
-const { findItemIndexById } = require("../utils/contentHelpers");
+const { findItemIndexById, reorderItemsByIds } = require("../utils/contentHelpers");
 const { validateProjectPayload } = require("../utils/contentValidators");
 
 const router = express.Router();
@@ -39,7 +39,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
       description: req.body.description.trim(),
       tools: typeof req.body.tools === "string" ? req.body.tools.trim() : "",
       link: typeof req.body.link === "string" ? req.body.link.trim() : "",
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
       createdAt: new Date().toISOString(),
     };
 
@@ -81,7 +81,7 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
       description: req.body.description.trim(),
       tools: typeof req.body.tools === "string" ? req.body.tools.trim() : "",
       link: typeof req.body.link === "string" ? req.body.link.trim() : "",
-      imageUrl: req.body.imageUrl.trim(),
+      imageUrl: typeof req.body.imageUrl === "string" ? req.body.imageUrl.trim() : "",
     };
 
     content.projects[projectIndex] = updatedProject;
@@ -91,6 +91,29 @@ router.put("/:id", requireAdminAuth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Failed to update project.",
+      error: error.message,
+    });
+  }
+});
+
+router.post("/reorder", requireAdminAuth, async (req, res) => {
+  try {
+    const content = await readContent();
+    const reorderedProjects = reorderItemsByIds(content.projects, req.body.itemIds);
+
+    if (!reorderedProjects) {
+      return res.status(400).json({
+        message: "itemIds must include every project id exactly once.",
+      });
+    }
+
+    content.projects = reorderedProjects;
+    await writeContent(content);
+
+    return res.json(content.projects);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Failed to reorder projects.",
       error: error.message,
     });
   }

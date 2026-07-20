@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Button, Col, Container, Form, Modal, Row, Toast, ToastContainer } from "react-bootstrap";
+import { ArrowDown, ArrowUp } from "react-bootstrap-icons";
 import {
   createContentItem,
   deleteContentItem,
   fetchContentCollection,
   loginAdmin,
-  logoutAdmin,
+  reorderContentItems,
   updateContentItem,
   verifyAdminSession,
 } from "../utils/contentApi";
@@ -13,39 +14,43 @@ import {
 const collectionConfig = {
   projects: {
     label: "Projects",
+    singularLabel: "Project",
     emptyMessage: "No projects added yet.",
     fields: [
       { name: "title", label: "Title", required: true },
       { name: "description", label: "Description", required: true, as: "textarea", rows: 4 },
       { name: "tools", label: "Tools", required: false },
       { name: "link", label: "Link", required: false },
-      { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/projects/example.png" },
+      { name: "imageUrl", label: "Image Path / URL", required: false, placeholder: "/images/projects/example.png or https://example.com/project.png" },
     ],
   },
   certificates: {
     label: "Certificates",
+    singularLabel: "Certificate",
     emptyMessage: "No certificates added yet.",
     fields: [
       { name: "title", label: "Title", required: true },
       { name: "description", label: "Description", required: true, as: "textarea", rows: 4 },
-      { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/certificates/example.jpg" },
+      { name: "imageUrl", label: "Image Path / URL", required: false, placeholder: "/images/certificates/example.jpg or https://example.com/certificate.jpg" },
     ],
   },
   activities: {
     label: "Activities",
+    singularLabel: "Activity",
     emptyMessage: "No activities added yet.",
     fields: [
       { name: "title", label: "Title", required: true },
       { name: "description", label: "Description", required: true, as: "textarea", rows: 4 },
-      { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/activities/example.jpg" },
+      { name: "imageUrl", label: "Image Path / URL", required: false, placeholder: "/images/activities/example.jpg or https://example.com/activity.jpg" },
     ],
   },
   skills: {
     label: "Tech Stack",
+    singularLabel: "Skill",
     emptyMessage: "No tech stack items added yet.",
     fields: [
       { name: "name", label: "Name", required: true },
-      { name: "imageUrl", label: "Image Path", required: true, placeholder: "/images/skills/example.png" },
+      { name: "imageUrl", label: "Image Path / URL", required: false, placeholder: "/images/skills/example.png or https://example.com/skill.png" },
     ],
   },
 };
@@ -57,7 +62,8 @@ function buildInitialFormState(collection) {
   }, {});
 }
 
-export function ContentManager() {
+export function ContentManager({ isAdminAuthenticated, onAdminAuthChange }) {
+  const editorPanelRef = useRef(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [selectedCollection, setSelectedCollection] = useState("projects");
@@ -72,21 +78,24 @@ export function ContentManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [statusMessage, setStatusMessage] = useState("");
   const [loginValues, setLoginValues] = useState({
     username: "",
     password: "",
   });
   const [imagePreviewStatus, setImagePreviewStatus] = useState("idle");
+  const [toastState, setToastState] = useState({
+    show: false,
+    variant: "success",
+    title: "",
+    message: "",
+  });
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [movingItemId, setMovingItemId] = useState("");
 
   const currentConfig = collectionConfig[selectedCollection];
   const currentItems = itemsByCollection[selectedCollection];
   const previewImageUrl = formValues.imageUrl ? formValues.imageUrl.trim() : "";
-  const totalItems =
-    itemsByCollection.projects.length +
-    itemsByCollection.certificates.length +
-    itemsByCollection.activities.length +
-    itemsByCollection.skills.length;
   const editorTitle = editingId ? "Update Item" : "Create New Item";
   const editorDescription = editingId
     ? "You are editing an existing item. Save when the content looks correct."
@@ -95,6 +104,15 @@ export function ContentManager() {
   const previewFields = useMemo(() => {
     return currentConfig.fields.filter((field) => formValues[field.name]);
   }, [currentConfig.fields, formValues]);
+
+  function showManagerToast(variant, title, message) {
+    setToastState({
+      show: true,
+      variant,
+      title,
+      message,
+    });
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -108,6 +126,7 @@ export function ContentManager() {
 
       setIsAuthenticated(authenticated);
       setIsCheckingAuth(false);
+      onAdminAuthChange?.(authenticated);
     }
 
     checkAdminSession();
@@ -115,7 +134,26 @@ export function ContentManager() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [onAdminAuthChange]);
+
+  useEffect(() => {
+    if (isAdminAuthenticated) {
+      return;
+    }
+
+    setIsAuthenticated(false);
+    setIsLoading(false);
+    setItemsByCollection({
+      projects: [],
+      certificates: [],
+      activities: [],
+      skills: [],
+    });
+    setFormValues(buildInitialFormState(selectedCollection));
+    setEditingId("");
+    setErrorMessage("");
+    setDeleteTarget(null);
+  }, [isAdminAuthenticated, selectedCollection]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -144,13 +182,12 @@ export function ContentManager() {
           activities,
           skills,
         });
-        setErrorMessage("");
       } catch (error) {
         if (!isMounted) {
           return;
         }
 
-        setErrorMessage("Unable to load content manager data right now.");
+        showManagerToast("error", "Load failed", "Unable to load content manager data right now.");
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -168,8 +205,8 @@ export function ContentManager() {
   useEffect(() => {
     setFormValues(buildInitialFormState(selectedCollection));
     setEditingId("");
-    setStatusMessage("");
     setErrorMessage("");
+    setDeleteTarget(null);
   }, [selectedCollection]);
 
   useEffect(() => {
@@ -205,12 +242,12 @@ export function ContentManager() {
   async function handleLoginSubmit(event) {
     event.preventDefault();
     setErrorMessage("");
-    setStatusMessage("");
     setIsSubmitting(true);
 
     try {
       await loginAdmin(loginValues.username.trim(), loginValues.password);
       setIsAuthenticated(true);
+      onAdminAuthChange?.(true);
       setIsLoading(true);
       setLoginValues({
         username: "",
@@ -224,24 +261,9 @@ export function ContentManager() {
     }
   }
 
-  async function handleLogout() {
-    await logoutAdmin().catch(() => null);
-    setIsAuthenticated(false);
-    setItemsByCollection({
-      projects: [],
-      certificates: [],
-      activities: [],
-      skills: [],
-    });
-    resetCurrentForm();
-    setStatusMessage("");
-    setErrorMessage("");
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
     setIsSubmitting(true);
-    setStatusMessage("");
     setErrorMessage("");
 
     try {
@@ -268,14 +290,16 @@ export function ContentManager() {
         };
       });
 
-      setStatusMessage(
+      showManagerToast(
+        "success",
+        editingId ? "Updated" : "Created",
         editingId
           ? `${currentConfig.label.slice(0, -1)} updated successfully.`
           : `${currentConfig.label.slice(0, -1)} created successfully.`
       );
       resetCurrentForm();
     } catch (error) {
-      setErrorMessage(error.message || "Unable to save this item.");
+      showManagerToast("error", "Save failed", error.message || "Unable to save this item.");
     } finally {
       setIsSubmitting(false);
     }
@@ -290,37 +314,110 @@ export function ContentManager() {
 
     setFormValues(nextFormValues);
     setEditingId(item.id);
-    setStatusMessage("");
     setErrorMessage("");
+
+    window.requestAnimationFrame(() => {
+      if (!editorPanelRef.current) {
+        return;
+      }
+
+      const navbarOffset = 110;
+      const editorTop =
+        editorPanelRef.current.getBoundingClientRect().top + window.scrollY - navbarOffset;
+
+      window.scrollTo({
+        top: Math.max(editorTop, 0),
+        behavior: "smooth",
+      });
+    });
   }
 
-  async function handleDelete(id) {
-    const shouldDelete = window.confirm("Delete this item?");
+  function handleDelete(id) {
+    const item = currentItems.find((currentItem) => currentItem.id === id);
 
-    if (!shouldDelete) {
+    if (!item) {
       return;
     }
 
-    setStatusMessage("");
-    setErrorMessage("");
+    setDeleteTarget(item);
+  }
+
+  async function confirmDelete() {
+    if (!deleteTarget) {
+      return;
+    }
+
+    setIsDeleting(true);
 
     try {
-      await deleteContentItem(selectedCollection, id);
+      await deleteContentItem(selectedCollection, deleteTarget.id);
 
       setItemsByCollection((currentCollections) => ({
         ...currentCollections,
         [selectedCollection]: currentCollections[selectedCollection].filter(
-          (item) => item.id !== id
+          (item) => item.id !== deleteTarget.id
         ),
       }));
 
-      if (editingId === id) {
+      if (editingId === deleteTarget.id) {
         resetCurrentForm();
       }
 
-      setStatusMessage(`${currentConfig.label.slice(0, -1)} deleted successfully.`);
+      showManagerToast(
+        "success",
+        "Deleted",
+        `${currentConfig.singularLabel} deleted successfully.`
+      );
+      setDeleteTarget(null);
     } catch (error) {
-      setErrorMessage(error.message || "Unable to delete this item.");
+      showManagerToast(
+        "error",
+        "Delete failed",
+        error.message || "Unable to delete this item."
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+  async function handleMoveItem(id, direction) {
+    const currentIndex = currentItems.findIndex((item) => item.id === id);
+    const nextIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+
+    if (currentIndex === -1 || nextIndex < 0 || nextIndex >= currentItems.length) {
+      return;
+    }
+
+    const nextItems = [...currentItems];
+    const [movedItem] = nextItems.splice(currentIndex, 1);
+    nextItems.splice(nextIndex, 0, movedItem);
+
+    setMovingItemId(id);
+
+    try {
+      const reorderedItems = await reorderContentItems(
+        selectedCollection,
+        nextItems.map((item) => item.id)
+      );
+
+      setItemsByCollection((currentCollections) => ({
+        ...currentCollections,
+        [selectedCollection]: reorderedItems,
+      }));
+
+      showManagerToast(
+        "success",
+        "Order updated",
+        `${currentConfig.label} order updated successfully.`
+      );
+    } catch (error) {
+      showManagerToast(
+        "error",
+        "Reorder failed",
+        error.message || "Unable to update the item order."
+      );
+    } finally {
+      setMovingItemId("");
     }
   }
 
@@ -402,168 +499,161 @@ export function ContentManager() {
   return (
     <section className="content-manager" id="manage">
       <Container>
-        <div className="manager-hero">
-          <div>
-            <p className="manager-eyebrow">Admin Dashboard</p>
-            <h1>Manage Portfolio Content</h1>
-            <p className="manager-hero-copy">
-              Update public portfolio content from one place. Changes are saved
-              to the API-backed content store and reflected on the website.
-            </p>
-          </div>
-          <div className="manager-hero-meta">
-            <span>{totalItems} Total Items</span>
-            <span>{itemsByCollection.projects.length} Projects</span>
-            <span>{itemsByCollection.certificates.length} Certificates</span>
-            <span>{itemsByCollection.activities.length} Activities</span>
-            <span>{itemsByCollection.skills.length} Skills</span>
-          </div>
-        </div>
         <div className="manager-status-stack">
           {isLoading && (
             <div className="manager-notice manager-notice-info">
               Loading content manager data...
             </div>
           )}
-          {statusMessage && (
-            <div className="manager-notice manager-notice-success">
-              {statusMessage}
-            </div>
-          )}
-          {errorMessage && (
-            <div className="manager-notice manager-notice-error">
-              {errorMessage}
-            </div>
-          )}
         </div>
-        <Row className="align-items-start manager-dashboard-layout">
-          <Col lg={5} xl={4}>
-            <div className="manager-panel manager-editor-panel">
-              <div className="manager-panel-header">
-                <div>
-                  <p className="manager-eyebrow">Editor</p>
-                  <h2>{editorTitle}</h2>
-                  <p>{editorDescription}</p>
-                </div>
-                <Button type="button" variant="outline-secondary" onClick={handleLogout}>
-                  Log Out
-                </Button>
+        <ToastContainer position="top-end" className="manager-toast-container">
+          <Toast
+            bg={toastState.variant === "error" ? "danger" : "success"}
+            onClose={() => setToastState((currentState) => ({ ...currentState, show: false }))}
+            show={toastState.show}
+            delay={2600}
+            autohide
+          >
+            <Toast.Header closeButton>
+              <strong className="me-auto">{toastState.title}</strong>
+            </Toast.Header>
+            <Toast.Body className="manager-toast-body">{toastState.message}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+        <div className="manager-dashboard-stack">
+          <div className="manager-panel manager-editor-panel" ref={editorPanelRef}>
+            <div className="manager-panel-header">
+              <div>
+                <p className="manager-eyebrow">Editor</p>
+                <h2>{editorTitle}</h2>
+                <p>{editorDescription}</p>
               </div>
+            </div>
 
-              <div className="manager-tabs">
-                {Object.entries(collectionConfig).map(([collectionKey, config]) => (
-                  <button
-                    key={collectionKey}
-                    type="button"
-                    className={selectedCollection === collectionKey ? "active" : ""}
-                    onClick={() => setSelectedCollection(collectionKey)}
-                  >
-                    {config.label}
-                  </button>
-                ))}
-              </div>
+            <div className="manager-tabs">
+              {Object.entries(collectionConfig).map(([collectionKey, config]) => (
+                <button
+                  key={collectionKey}
+                  type="button"
+                  className={selectedCollection === collectionKey ? "active" : ""}
+                  onClick={() => setSelectedCollection(collectionKey)}
+                >
+                  <span>{config.label}</span>
+                  <small>{itemsByCollection[collectionKey].length}</small>
+                </button>
+              ))}
+            </div>
 
-              <div className="manager-editor-meta">
-                <div className="manager-editor-meta-card">
-                  <span className="manager-editor-meta-label">Collection</span>
-                  <strong>{currentConfig.label}</strong>
+            <div className="manager-editor-layout">
+              <div className="manager-editor-form-column">
+                <div className="manager-editor-meta">
+                  <div className="manager-editor-meta-card">
+                    <span className="manager-editor-meta-label">Collection</span>
+                    <strong>{currentConfig.label}</strong>
+                  </div>
+                  <div className="manager-editor-meta-card">
+                    <span className="manager-editor-meta-label">Mode</span>
+                    <strong>{editingId ? "Editing existing item" : "Creating new item"}</strong>
+                  </div>
                 </div>
-                <div className="manager-editor-meta-card">
-                  <span className="manager-editor-meta-label">Mode</span>
-                  <strong>{editingId ? "Editing existing item" : "Creating new item"}</strong>
-                </div>
-              </div>
 
-              <Form onSubmit={handleSubmit} className="manager-form">
-                {currentConfig.fields.map((field) => (
-                  <Form.Group className="mb-3" key={field.name}>
-                    <Form.Label>{field.label}</Form.Label>
-                    <Form.Control
-                      as={field.as}
-                      rows={field.rows}
-                      name={field.name}
-                      value={formValues[field.name]}
-                      onChange={handleInputChange}
-                      placeholder={field.placeholder}
-                      required={field.required}
-                    />
-                  </Form.Group>
-                ))}
+                <Form onSubmit={handleSubmit} className="manager-form">
+                  {currentConfig.fields.map((field) => (
+                    <Form.Group className="mb-3" key={field.name}>
+                      <Form.Label>{field.label}</Form.Label>
+                      <Form.Control
+                        as={field.as}
+                        rows={field.rows}
+                        name={field.name}
+                        value={formValues[field.name]}
+                        onChange={handleInputChange}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                      />
+                    </Form.Group>
+                  ))}
 
-                <div className="manager-actions">
-                  <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Saving..." : editingId ? "Update Item" : "Add Item"}
-                  </Button>
-                  {editingId && (
-                    <Button
-                      type="button"
-                      variant="outline-secondary"
-                      onClick={resetCurrentForm}
-                    >
-                      Cancel Edit
+                  <div className="manager-actions">
+                    <Button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? "Saving..." : editingId ? "Update Item" : "Add Item"}
                     </Button>
+                    {editingId && (
+                      <Button
+                        type="button"
+                        variant="outline-secondary"
+                        onClick={resetCurrentForm}
+                      >
+                        Cancel Edit
+                      </Button>
+                    )}
+                  </div>
+                </Form>
+              </div>
+
+              <div className="manager-preview-column">
+                <div className="manager-preview">
+                  <div className="manager-preview-header">
+                    <div>
+                      <p className="manager-eyebrow">Preview</p>
+                      <h3>Quick Preview</h3>
+                    </div>
+                    {editingId && <span className="manager-preview-tag">Editing</span>}
+                  </div>
+                  {previewFields.length === 0 && (
+                    <p className="manager-preview-empty">Start typing to preview this item.</p>
+                  )}
+                  {previewFields.length > 0 && (
+                    <div className="manager-preview-card">
+                      {previewImageUrl && (
+                        <div className="manager-image-preview">
+                          <img
+                            src={previewImageUrl}
+                            alt={formValues.title || formValues.name || "Preview"}
+                            onLoad={() => setImagePreviewStatus("ready")}
+                            onError={() => setImagePreviewStatus("error")}
+                          />
+                          <span>Image preview</span>
+                          {imagePreviewStatus === "loading" && (
+                            <p className="manager-image-preview-note">
+                              Loading preview...
+                            </p>
+                          )}
+                          {imagePreviewStatus === "error" && (
+                            <p className="manager-image-preview-note manager-image-preview-note-error">
+                              Preview unavailable. Check the image path.
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {previewFields.map((field) => (
+                        <p key={field.name}>
+                          <strong>{field.label}:</strong> {formValues[field.name]}
+                        </p>
+                      ))}
+                    </div>
                   )}
                 </div>
-              </Form>
-
-              <div className="manager-preview">
-                <div className="manager-preview-header">
-                  <div>
-                    <p className="manager-eyebrow">Preview</p>
-                    <h3>Quick Preview</h3>
-                  </div>
-                  {editingId && <span className="manager-preview-tag">Editing</span>}
-                </div>
-                {previewFields.length === 0 && (
-                  <p className="manager-preview-empty">Start typing to preview this item.</p>
-                )}
-                {previewFields.length > 0 && (
-                  <div className="manager-preview-card">
-                    {previewImageUrl && (
-                      <div className="manager-image-preview">
-                        <img
-                          src={previewImageUrl}
-                          alt={formValues.title || formValues.name || "Preview"}
-                          onLoad={() => setImagePreviewStatus("ready")}
-                          onError={() => setImagePreviewStatus("error")}
-                        />
-                        <span>Image preview</span>
-                        {imagePreviewStatus === "loading" && (
-                          <p className="manager-image-preview-note">
-                            Loading preview...
-                          </p>
-                        )}
-                        {imagePreviewStatus === "error" && (
-                          <p className="manager-image-preview-note manager-image-preview-note-error">
-                            Preview unavailable. Check the image path.
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    {previewFields.map((field) => (
-                      <p key={field.name}>
-                        <strong>{field.label}:</strong> {formValues[field.name]}
-                      </p>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
-          </Col>
+          </div>
 
-          <Col lg={7} xl={8}>
-            <div className="manager-panel manager-list-panel">
-              <div className="manager-panel-header">
-                <div>
-                  <p className="manager-eyebrow">Collection</p>
-                  <h3>{currentConfig.label}</h3>
-                  <p>Review, edit, or remove existing content from this collection.</p>
-                </div>
+          <div className="manager-panel manager-list-panel">
+            <div className="manager-panel-header">
+              <div>
+                <p className="manager-eyebrow">Collection</p>
+                <h3>{currentConfig.label}</h3>
+                <p>Review, edit, or remove existing content from this collection.</p>
+              </div>
+              <div className="manager-list-header-meta">
                 <div className="manager-collection-count">
                   {currentItems.length} item{currentItems.length === 1 ? "" : "s"}
                 </div>
+                <div className="manager-list-hint">
+                  Click edit to load an item into the form above.
+                </div>
               </div>
-
+            </div>
+            <div className="manager-list-scroll-area">
               {!isLoading && currentItems.length === 0 && (
                 <div className="manager-empty-state">
                   <h4>No items yet</h4>
@@ -572,11 +662,23 @@ export function ContentManager() {
               )}
               {!isLoading && currentItems.length > 0 && (
                 <div className="manager-item-grid">
-                  {currentItems.map((item) => (
-                    <div className="manager-item-card" key={item.id}>
+                    {currentItems.map((item, itemIndex) => (
+                      <div className="manager-item-card" key={item.id}>
+                      <div className="manager-item-media">
+                        {item.imageUrl ? (
+                          <img src={item.imageUrl} alt={item.title || item.name} />
+                        ) : (
+                          <div className="manager-item-media-empty">No image</div>
+                        )}
+                      </div>
                       <div className="manager-item-content">
                         <p className="manager-item-id">{item.id}</p>
                         <h4>{item.title || item.name}</h4>
+                        <div className="manager-item-tags">
+                          <span>{currentConfig.singularLabel}</span>
+                          {item.link && <span>Has link</span>}
+                          {item.tools && <span>Tools listed</span>}
+                        </div>
                         {item.description && <p>{item.description}</p>}
                         {"tools" in item && item.tools && (
                           <p><strong>Tools:</strong> {item.tools}</p>
@@ -584,9 +686,29 @@ export function ContentManager() {
                         {"link" in item && item.link && (
                           <p><strong>Link:</strong> {item.link}</p>
                         )}
-                        <p><strong>Image:</strong> {item.imageUrl}</p>
+                        <p className="manager-item-image-path"><strong>Image:</strong> {item.imageUrl || "-"}</p>
                       </div>
                       <div className="manager-item-actions">
+                        <div className="manager-item-order-actions">
+                          <Button
+                            type="button"
+                            variant="outline-secondary"
+                            onClick={() => handleMoveItem(item.id, "up")}
+                            disabled={itemIndex === 0 || movingItemId === item.id}
+                            aria-label={`Move ${item.title || item.name} up`}
+                          >
+                            <ArrowUp />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline-secondary"
+                            onClick={() => handleMoveItem(item.id, "down")}
+                            disabled={itemIndex === currentItems.length - 1 || movingItemId === item.id}
+                            aria-label={`Move ${item.title || item.name} down`}
+                          >
+                            <ArrowDown />
+                          </Button>
+                        </div>
                         <Button type="button" onClick={() => handleEdit(item)}>
                           Edit
                         </Button>
@@ -603,9 +725,41 @@ export function ContentManager() {
                 </div>
               )}
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
+      <Modal
+        centered
+        show={Boolean(deleteTarget)}
+        onHide={() => !isDeleting && setDeleteTarget(null)}
+        dialogClassName="manager-confirm-modal"
+      >
+        <Modal.Header closeButton={!isDeleting}>
+          <Modal.Title>Delete {currentConfig.singularLabel}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Delete <strong>{deleteTarget?.title || deleteTarget?.name || deleteTarget?.id}</strong> from{" "}
+          {currentConfig.label}? This action updates the portfolio immediately.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="outline-secondary"
+            onClick={() => setDeleteTarget(null)}
+            disabled={isDeleting}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={confirmDelete}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 }

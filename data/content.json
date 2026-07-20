@@ -1,6 +1,24 @@
 {
   "projects": [
     {
+      "id": "project-004",
+      "title": "Web Application",
+      "description": "Develop a 2D homemade cake web application to assess user satisfaction.",
+      "tools": "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
+      "link": "https://style-your-cake-v1.vercel.app/",
+      "imageUrl": "/images/projects/web.png",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
+      "id": "project-007",
+      "title": "AI Web Application",
+      "description": "Intern at Nilecon developed a web application where users can create arttoy models with pollination ai.",
+      "tools": "JavaScript, TypeScript, Tailwind CSS, Next.js, MongoDB, React.js",
+      "link": "https://nongtoy.vercel.app",
+      "imageUrl": "/images/projects/nongtoy.jpg",
+      "createdAt": "2026-07-17T00:00:00.000Z"
+    },
+    {
       "id": "project-001",
       "title": "Mobile Application",
       "description": "develop an application for ordering manga books with Net MAUI.",
@@ -28,15 +46,6 @@
       "createdAt": "2026-07-17T00:00:00.000Z"
     },
     {
-      "id": "project-004",
-      "title": "Web Application",
-      "description": "Develop a 2D homemade cake web application to assess user satisfaction.",
-      "tools": "TypeScript, JavaScript, Tailwind CSS, MongoDB, Vite, Next.js",
-      "link": "https://style-your-cake-v1.vercel.app/",
-      "imageUrl": "/images/projects/web.png",
-      "createdAt": "2026-07-17T00:00:00.000Z"
-    },
-    {
       "id": "project-005",
       "title": "Web Application",
       "description": "served as project manager in developing the La Ferly Clinic web application to manage data in clinic.",
@@ -52,15 +61,6 @@
       "tools": "Power BI, Tableau, Excel",
       "link": "",
       "imageUrl": "/images/projects/adventure.png",
-      "createdAt": "2026-07-17T00:00:00.000Z"
-    },
-    {
-      "id": "project-007",
-      "title": "AI Web Application",
-      "description": "Intern at Nilecon developed a web application where users can create arttoy models with pollination ai.",
-      "tools": "JavaScript, TypeScript, Tailwind CSS, Next.js, MongoDB, React.js",
-      "link": "https://nongtoy.vercel.app",
-      "imageUrl": "/images/projects/nongtoy.jpg",
       "createdAt": "2026-07-17T00:00:00.000Z"
     }
   ],
