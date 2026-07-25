@@ -2,7 +2,11 @@
   "framework": "create-react-app",
   "rewrites": [
     {
-      "source": "/manage",
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/:path((?!api/).*)",
       "destination": "/index.html"
     }
   ]

@@ -48,13 +48,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", contentRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/certificates", certificateRoutes);
-app.use("/api/activities", activityRoutes);
-app.use("/api/skills", skillRoutes);
-app.use("/api/contact", contactRoutes);
+app.use("/", contentRoutes);
+app.use("/admin", adminRoutes);
+app.use("/projects", projectRoutes);
+app.use("/certificates", certificateRoutes);
+app.use("/activities", activityRoutes);
+app.use("/skills", skillRoutes);
 app.use("/contact", contactRoutes);
 
 module.exports = app;

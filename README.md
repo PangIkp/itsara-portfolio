@@ -6,8 +6,8 @@
 
 - `src/` คือ frontend React
 - `backend/devServer.js` คือ entry ของ backend สำหรับ local development
-- `backend/expressApp.js` คือ Express app ที่ใช้ทั้ง local และ Vercel API function
-- `api/[...route].js` คือ Vercel function entry
+- `backend/expressApp.js` คือ Express app หลักของ API
+- `api/[...route].js` คือ Vercel function entry สำหรับ `/api/*`
 - `routes/` คือ API routes แยกตามฟีเจอร์
 - `utils/` คือ utility ของ backend
 - `data/content.json` คือ seed data/local fallback
@@ -131,6 +131,5 @@ EMAIL_PASS=your-app-password
 
 ## หมายเหตุ
 
-- storage ตอนนี้ยังเป็นไฟล์ JSON ไม่ใช่ database จริง
-- ถ้ามีหลายคนแก้ข้อมูลพร้อมกัน ควรย้ายไปใช้ database ภายหลัง
-- ถ้า deploy แบบ static hosting อย่างเดียว API จะใช้งานไม่ได้
+- storage ใช้ `Blob` บน Vercel และ fallback เป็นไฟล์ JSON ตอน local
+- ถ้ามีหลายคนแก้ข้อมูลพร้อมกันมากขึ้น ควรย้ายไปใช้ database ภายหลัง
