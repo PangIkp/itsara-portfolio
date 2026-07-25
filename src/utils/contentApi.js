@@ -1,4 +1,11 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const rawApiBaseUrl = (process.env.REACT_APP_API_BASE_URL || "").trim();
+const isLocalApiBaseUrl = /^https?:\/\/localhost(?::\d+)?$/i.test(rawApiBaseUrl);
+const API_BASE_URL =
+  typeof window !== "undefined" &&
+  window.location.hostname !== "localhost" &&
+  isLocalApiBaseUrl
+    ? ""
+    : rawApiBaseUrl;
 const ADMIN_TOKEN_KEY = "portfolio_admin_token";
 
 function getAdminToken() {
