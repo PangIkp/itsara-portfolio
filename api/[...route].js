@@ -1,3 +1,3 @@
-const app = require("../backend/expressApp");
+const apiApp = require("../backend/expressApp");
 
-module.exports = app;
+module.exports = apiApp;
