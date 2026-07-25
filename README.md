@@ -5,10 +5,12 @@
 ## โครงสร้างหลัก
 
 - `src/` คือ frontend React
-- `server.js` คือ entry ของ backend ฝั่ง Express
+- `backend/devServer.js` คือ entry ของ backend สำหรับ local development
+- `backend/expressApp.js` คือ Express app ที่ใช้ทั้ง local และ Vercel API function
+- `api/[...route].js` คือ Vercel function entry
 - `routes/` คือ API routes แยกตามฟีเจอร์
 - `utils/` คือ utility ของ backend
-- `data/content.json` คือแหล่งข้อมูลหลักของ `projects`, `certificates`, `activities`
+- `data/content.json` คือ seed data/local fallback
 - `public/images/` คือรูปที่อ้างจากข้อมูล API
 
 ## การรันในเครื่อง
@@ -39,13 +41,20 @@ npm start
 REACT_APP_API_BASE_URL=http://localhost:5000
 ```
 
-ถ้าต้องการใช้ route `/contact` ของ Express + Nodemailer ให้ตั้งค่า:
+สำหรับระบบจัดการข้อมูลและ Vercel Blob:
+
+```bash
+ADMIN_USERNAME=your-admin-username
+ADMIN_PASSWORD=your-admin-password
+BLOB_STORE_ID=store_your_blob_store_id
+BLOB_READ_WRITE_TOKEN=your_blob_read_write_token
+```
+
+ถ้าต้องการใช้ route `/contact` ของ Express + Nodemailer ค่อยเพิ่ม:
 
 ```bash
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
-ADMIN_USERNAME=your-admin-username
-ADMIN_PASSWORD=your-admin-password
 ```
 
 ## ระบบข้อมูลปัจจุบัน
@@ -58,7 +67,8 @@ ADMIN_PASSWORD=your-admin-password
 
 ทั้งหมดถูกเก็บไว้ใน:
 
-- `data/content.json`
+- local: `data/content.json`
+- Vercel: `Blob` (`content/content.json`)
 
 และถูกจัดการผ่าน API:
 
