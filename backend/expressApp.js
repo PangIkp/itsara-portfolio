@@ -2,16 +2,16 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const contentRoutes = require("./routes/contentRoutes");
-const projectRoutes = require("./routes/projectRoutes");
-const certificateRoutes = require("./routes/certificateRoutes");
-const activityRoutes = require("./routes/activityRoutes");
-const skillRoutes = require("./routes/skillRoutes");
-const adminRoutes = require("./routes/adminRoutes");
-const contactRoutes = require("./routes/contactRoutes");
+const contentRoutes = require("../routes/contentRoutes");
+const projectRoutes = require("../routes/projectRoutes");
+const certificateRoutes = require("../routes/certificateRoutes");
+const activityRoutes = require("../routes/activityRoutes");
+const skillRoutes = require("../routes/skillRoutes");
+const adminRoutes = require("../routes/adminRoutes");
+const contactRoutes = require("../routes/contactRoutes");
 
 function loadEnvFile() {
-  const envPath = path.join(__dirname, ".env");
+  const envPath = path.join(__dirname, "..", ".env");
 
   if (!fs.existsSync(envPath)) {
     return;
