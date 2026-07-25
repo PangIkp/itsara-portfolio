@@ -1,7 +1,9 @@
 const fs = require("fs/promises");
 const path = require("path");
+const { get, put } = require("@vercel/blob");
 
 const contentFilePath = path.join(__dirname, "..", "data", "content.json");
+const blobContentPath = "content/content.json";
 
 const defaultContent = {
   projects: [],
@@ -10,21 +12,68 @@ const defaultContent = {
   skills: [],
 };
 
-async function readContent() {
-  const file = await fs.readFile(contentFilePath, "utf8");
-  const parsedContent = JSON.parse(file);
-
-  return {
-    ...defaultContent,
-    ...parsedContent,
-  };
+function shouldUseBlobStore() {
+  return Boolean(
+    process.env.BLOB_READ_WRITE_TOKEN ||
+      (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN)
+  );
 }
 
-async function writeContent(content) {
-  const normalizedContent = {
+function normalizeContent(content) {
+  return {
     ...defaultContent,
     ...content,
   };
+}
+
+async function readLocalContent() {
+  const file = await fs.readFile(contentFilePath, "utf8");
+  return normalizeContent(JSON.parse(file));
+}
+
+async function writeBlobContent(content) {
+  const normalizedContent = normalizeContent(content);
+
+  await put(blobContentPath, JSON.stringify(normalizedContent, null, 2), {
+    access: "private",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    cacheControlMaxAge: 60,
+    contentType: "application/json",
+  });
+
+  return normalizedContent;
+}
+
+async function readContent() {
+  if (!shouldUseBlobStore()) {
+    return readLocalContent();
+  }
+
+  const blobResult = await get(blobContentPath, {
+    access: "private",
+    useCache: false,
+  });
+
+  if (!blobResult) {
+    const seededContent = await readLocalContent();
+    await writeBlobContent(seededContent);
+    return seededContent;
+  }
+
+  const blobText = await new Response(blobResult.stream).text();
+  const parsedContent = JSON.parse(blobText);
+
+  return normalizeContent(parsedContent);
+}
+
+async function writeContent(content) {
+  const normalizedContent = normalizeContent(content);
+
+  if (shouldUseBlobStore()) {
+    await writeBlobContent(normalizedContent);
+    return;
+  }
 
   await fs.writeFile(
     contentFilePath,
